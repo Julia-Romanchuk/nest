@@ -1,4 +1,17 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpException,
+  HttpStatus, NotFoundException,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Res,
+} from '@nestjs/common';
 import { UserStorageService } from '../user-storage/user-storage.service';
 
 @Controller('users') // specify the path controller responsible for '.../user'
@@ -14,7 +27,10 @@ export class UsersController {
   @HttpCode(HttpStatus.ACCEPTED) // allow to set specific code to entire response
   getAll (@Query() pagination) {
     const { limit, page } = pagination;
-
+    // generate readable error object {message, statusCode}
+    if (false) throw new HttpException('Error message', 404)
+    // there are also another common error exception {message, statusCode, error}
+    if (false) throw new NotFoundException('Error message')
     return `There are ${limit} users on page ${page}`
   }
 
