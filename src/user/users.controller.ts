@@ -1,11 +1,13 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Res } from '@nestjs/common';
 
 @Controller('users') // specify the path controller responsible for '.../user'
 export class UsersController {
   @Get()
   @HttpCode(HttpStatus.ACCEPTED) // allow to set specific code to entire response
-  getAll (@Res() res) { // give an access to native Express response object
-    res.status(200).send('All users array')
+  getAll (@Query() pagination) {
+    const { limit, page } = pagination;
+
+    return `There are ${limit} users on page ${page}`
   }
 
   @Get(':id') // that's how we can extract params from the path
