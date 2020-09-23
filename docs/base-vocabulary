@@ -1,5 +1,10 @@
 * Controllers - class where we can handle HTTP requests with depends on method, route (nest g co - to generate controller)
 
 * Providers (Services) - help to separate business login and from controllers, make this logic reusable between multiple
-controllers. It can inject dependencies - create relationship to each other (nest g s - to generate service)
+    controllers. It can inject dependencies - create relationship to each other (nest g s - to generate service)
+
+* Modules - ideal Nest architecture should employee multiple modules, each encapsulating closely related set of
+    capabilities (f.e. group controllers and services that serve same thing into own feature module) (nest g module name)
+
+* Dependency injection works through types
 
