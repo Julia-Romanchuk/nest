@@ -1,0 +1,5 @@
+* Controllers - class where we can handle HTTP requests with depends on method, route (nest g co - to generate controller)
+
+* Providers (Services) - help to separate business login and from controllers, make this logic reusable between multiple
+controllers. It can inject dependencies - create relationship to each other (nest g s - to generate service)
+

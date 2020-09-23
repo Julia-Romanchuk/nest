@@ -1,7 +1,15 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Res } from '@nestjs/common';
+import { UserStorageService } from '../user-storage/user-storage.service';
 
 @Controller('users') // specify the path controller responsible for '.../user'
 export class UsersController {
+
+  // here's the place of dependency injection, it achieve by looking at the type
+  // so dependencies are resolved simply by their type, it resolve it by creating, or
+  // according to SingleTone Pattern, return an existing instance
+  constructor (private readonly userStorageService: UserStorageService) {
+  }
+
   @Get()
   @HttpCode(HttpStatus.ACCEPTED) // allow to set specific code to entire response
   getAll (@Query() pagination) {
