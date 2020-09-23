@@ -13,6 +13,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { UserStorageService } from '../user-storage/user-storage.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users') // specify the path controller responsible for '.../user'
 export class UsersController {
@@ -41,8 +42,8 @@ export class UsersController {
   }
 
   @Post()
-  create(@Body() userInput) {
-    return userInput
+  create(@Body() createUserDto: CreateUserDto) {
+    return createUserDto
   }
 
   @Patch(':id') // allow updating partial, not all obj like PUT does

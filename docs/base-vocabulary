@@ -8,3 +8,6 @@
 
 * Dependency injection works through types
 
+* Data Transfer Object, DTO - object that are used to encapsulate data and send it from one app to another. Define an
+    interfaces of input/output within our system (what we expect to receive) (nest g class path/name.dto --no-spec)
+
