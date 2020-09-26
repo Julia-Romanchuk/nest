@@ -15,3 +15,10 @@
 To use docker we should create a configuration file using yml and define database container in yml format
     Docker image - multilayer file that will execute code in a container
 
+* TypeORM - allow us to interact with entities in the db in type safe manner
+
+TO INTEGRATE DB, TYPEORM SHOULD INSTALL:
+    @nestjs/typeorm
+    typeorm
+    pg
+
