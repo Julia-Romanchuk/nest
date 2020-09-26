@@ -11,3 +11,7 @@
 * Data Transfer Object, DTO - object that are used to encapsulate data and send it from one app to another. Define an
     interfaces of input/output within our system (what we expect to receive) (nest g class path/name.dto --no-spec)
 
+* Docker - platform to build run and share apps within containers
+To use docker we should create a configuration file using yml and define database container in yml format
+    Docker image - multilayer file that will execute code in a container
+

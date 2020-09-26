@@ -1,0 +1,19 @@
+  /* YAML docker-compose.yml configuration file */
+  version: 3
+  services:
+    db:
+# wil create postgres db
+      image:  postgres
+      restart: always
+      ports:
+# :5432 - define port number explicitly for docker container
+# it let us to use the same port for db inside and outside container as well
+        - "5432:5432"
+      environment:
+        POSTGRES_PASSWORD: pass123
+
+    // Start containers in detached / background mode
+    docker-compose up -d
+
+    // Stop containers
+    docker-compose down
