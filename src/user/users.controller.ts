@@ -15,6 +15,9 @@ import {
 import { UserStorageService } from '../user-storage/user-storage.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './dto/user.entity';
+import { Repository } from 'typeorm';
 
 @Controller('users') // specify the path controller responsible for '.../user'
 export class UsersController {
@@ -22,39 +25,50 @@ export class UsersController {
   // here's the place of dependency injection, it achieve by looking at the type
   // so dependencies are resolved simply by their type, it resolve it by creating, or
   // according to SingleTone Pattern, return an existing instance
-  constructor (private readonly userStorageService: UserStorageService) {
+  constructor (
+    @InjectRepository(User) // will generate repository for the service
+    private readonly usersRepository: Repository<User>
+  ) {
   }
 
   @Get()
   @HttpCode(HttpStatus.ACCEPTED) // allow to set specific code to entire response
   getAll (@Query() pagination) {
     const { limit, page } = pagination;
-    // generate readable error object {message, statusCode}
-    if (false) throw new HttpException('Error message', 404)
-    // there are also another common error exception {message, statusCode, error}
-    if (false) throw new NotFoundException('Error message')
-    return `There are ${limit} users on page ${page}`
+    return this.usersRepository.find()
   }
 
   @Get(':id') // that's how we can extract params from the path
-  getOne(@Param('id') id: string) { // specify required param name
-  // getOne(@Param() params) { // get obj with all existing params
-    return 'Concrete user'
+  async getOne(@Param('id') id: string) { // specify required param name
+    const user = await this.usersRepository.findOne(id)
+    if (!user) throw new NotFoundException( 'No user found');
+    return user
   }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return createUserDto
+    // create user instance based on dto
+    const createdUser = this.usersRepository.create(createUserDto);
+    // save new user entity in the db
+    return this.usersRepository.save(createdUser)
   }
 
   @Patch(':id') // allow updating partial, not all obj like PUT does
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) { // could pass few args
-  // update(@Body('name') userInput) { // to extract some props
-    return updateUserDto
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) { // could pass few args
+    // create new entity based on passed obj
+    // looks if an entity is already exist in db
+    // if exist - retrieves it and everything related to it and update with passed inf
+    // and return undefined if nothing was found
+    const user = await this.usersRepository.preload({ id, ...updateUserDto })
+    if (!user) throw new NotFoundException('No user found');
+    // save changes to the db
+    return this.usersRepository.save(user)
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return `User ${id} removed`
+  async remove(@Param('id') id: string) {
+    // findOne automatically throw not found error
+    const user = await this.usersRepository.findOne(id)
+    return this.usersRepository.remove(user)
   }
 }

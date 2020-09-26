@@ -16,9 +16,11 @@ To use docker we should create a configuration file using yml and define databas
     Docker image - multilayer file that will execute code in a container
 
 * TypeORM - allow us to interact with entities in the db in type safe manner
-    TypeORM Entity - represents relationships between ts class and db table
+    - TypeORM Entity - represents relationships between ts class and db table
     Setting synchronize: true, allow TypeORM to authentically generate a SQL table from all classes with the entity decorator
         in the metadata they contain (only for dev mode)
+    - Repository - each entity we create has its own repository, Repository class available for TypeOrm as an abstraction
+        over our data source (@InjectRepository is responsible for it)
 
 TO INTEGRATE DB, TYPEORM SHOULD INSTALL:
     @nestjs/typeorm
