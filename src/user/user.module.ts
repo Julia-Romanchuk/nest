@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UserStorageService } from '../user-storage/user-storage.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './dto/user.entity';
 
 // decorator that provide meta data to organize app structure:
 // * controllers - API routes to instantiate
@@ -8,5 +10,14 @@ import { UserStorageService } from '../user-storage/user-storage.service';
 //    anywhere this module is imported
 // * imports - list of required modules for this one
 // * providers - list of services that need to be instantiated by the Nest injector
-@Module({controllers: [UsersController], providers: [UserStorageService]})
+@Module({
+  // register User entity in the app, as we deal with this entity inside of this
+  // module, we should to make TypeOrm aware of this entity here
+  imports: [
+    // register TypeOrm in this module by .forFeature, and pass arr of entities
+    TypeOrmModule.forFeature([User])
+  ],
+  controllers: [UsersController],
+  providers: [UserStorageService]
+})
 export class UserModule {}
