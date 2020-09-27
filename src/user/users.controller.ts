@@ -18,6 +18,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 
 @Controller('users') // specify the path controller responsible for '.../user'
 export class UsersController {
@@ -33,14 +34,18 @@ export class UsersController {
 
   @Get()
   @HttpCode(HttpStatus.ACCEPTED) // allow to set specific code to entire response
-  getAll (@Query() pagination) {
-    const { limit, page } = pagination;
-    return this.usersRepository.find()
+  getAll (@Query() pagination: PaginationQueryDto) {
+    const { limit, offset } = pagination;
+    return this.usersRepository.find({
+      relations: ['posts'], // this param allow populate posts column
+      skip: offset,
+      take: limit
+    })
   }
 
   @Get(':id') // that's how we can extract params from the path
   async getOne(@Param('id') id: string) { // specify required param name
-    const user = await this.usersRepository.findOne(id)
+    const user = await this.usersRepository.findOne(id, { relations: ['posts'] })
     if (!user) throw new NotFoundException( 'No user found');
     return user
   }

@@ -11,7 +11,10 @@ async function bootstrap() {
     // throw an error if any unneeded fields was received and told what cause problem
     forbidNonWhitelisted: true,
     // transform all incoming obj to a DTO objects
-    transform: true
+    transform: true,
+    transformOptions: {
+      enableImplicitConversion: true
+    }
   }))
   await app.listen(3000);
 }
