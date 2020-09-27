@@ -16,7 +16,7 @@ import { UserStorageService } from '../user-storage/user-storage.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './dto/user.entity';
+import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 
 @Controller('users') // specify the path controller responsible for '.../user'
@@ -59,7 +59,7 @@ export class UsersController {
     // looks if an entity is already exist in db
     // if exist - retrieves it and everything related to it and update with passed inf
     // and return undefined if nothing was found
-    const user = await this.usersRepository.preload({ id, ...updateUserDto })
+    const user = await this.usersRepository.preload({ id: +id, ...updateUserDto })
     if (!user) throw new NotFoundException('No user found');
     // save changes to the db
     return this.usersRepository.save(user)

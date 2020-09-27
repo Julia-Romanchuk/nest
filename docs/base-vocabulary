@@ -21,6 +21,10 @@ To use docker we should create a configuration file using yml and define databas
         in the metadata they contain (only for dev mode)
     - Repository - each entity we create has its own repository, Repository class available for TypeOrm as an abstraction
         over our data source (@InjectRepository is responsible for it)
+    - Relations - associates between tables.
+        One-to-One - one row in first table has only one associate row in another, defined with @OneToOne
+        Many-to-One - defined with @ManyToOne / One-to-Many - defined with @OneToMany
+        Many-to-Many - defined with @ManyToMany
 
 TO INTEGRATE DB, TYPEORM SHOULD INSTALL:
     @nestjs/typeorm

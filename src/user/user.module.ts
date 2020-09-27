@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UserStorageService } from '../user-storage/user-storage.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './dto/user.entity';
+import { User } from '../entities/user.entity';
+import { Post } from '../entities/post.entity';
+import { Comments } from '../entities/comment.entity';
 
 // decorator that provide meta data to organize app structure:
 // * controllers - API routes to instantiate
@@ -15,7 +17,7 @@ import { User } from './dto/user.entity';
   // module, we should to make TypeOrm aware of this entity here
   imports: [
     // register TypeOrm in this module by .forFeature, and pass arr of entities
-    TypeOrmModule.forFeature([User])
+    TypeOrmModule.forFeature([User, Post, Comments])
   ],
   controllers: [UsersController],
   providers: [UserStorageService]
